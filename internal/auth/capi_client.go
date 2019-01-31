@@ -80,6 +80,7 @@ type authorizedSourceIds struct {
 func (c *CAPIClient) IsAuthorized(sourceId string, clientToken string) bool {
 	var sourceIds []string
 	s, ok := c.tokenCache.Load(clientToken)
+	log.Printf("sourceId: %s clientToken: %s", sourceId, clientToken)
 
 	if ok && time.Now().Before(s.(authorizedSourceIds).expiresAt) {
 		sourceIds = s.(authorizedSourceIds).sourceIds
@@ -92,8 +93,11 @@ func (c *CAPIClient) IsAuthorized(sourceId string, clientToken string) bool {
 		})
 	}
 
+	log.Printf("sourceIds: %v", sourceIds)
+
 	for _, s := range sourceIds {
 		if s == sourceId {
+			log.Printf("sourceId %s is valid", s)
 			return true
 		}
 	}

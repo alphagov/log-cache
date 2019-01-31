@@ -94,7 +94,7 @@ func (m CFAuthMiddlewareProvider) Middleware(h http.Handler) http.Handler {
 
 		if !userContext.IsAdmin {
 			if !m.logAuthorizer.IsAuthorized(sourceID, userContext.Token) {
-				w.WriteHeader(http.StatusNotFound)
+				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
 		}
